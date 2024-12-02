@@ -3,11 +3,10 @@ public class Day1
     public void Work()
     {
         Console.WriteLine("Hello, World from Day 1!");
-        Input input = Utils.ReadInputFile(1);
+        Data input = Utils.ReadInputFile(1, "   ");
 
-        var cols = input.GetCols();
-        var col0Ordered = cols[0].Order().ToList();
-        var col1Ordered = cols[1].Order().ToList();
+        var col0Ordered = input.Cols[0].Order().ToList();
+        var col1Ordered = input.Cols[1].Order().ToList();
 
         var sum = 0;
         for (var i = 0; i < col0Ordered.Count; i++)

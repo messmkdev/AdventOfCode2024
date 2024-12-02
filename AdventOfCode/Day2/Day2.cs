@@ -6,9 +6,9 @@ public class Day2
     {
         Console.WriteLine("Hello, World from Day 2!");
 
-        Input input = Utils.ReadInputFile(2);
+        Data input = Utils.ReadInputFile(2);
 
-        int nbValid = input.GetRows().Count(IsValidPart2);
+        int nbValid = input.Rows.ToList().Count(IsValidPart2);
 
         Console.WriteLine($"Nb report valid = {nbValid}");
 
