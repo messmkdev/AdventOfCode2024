@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+
 public class Day2
 {
+    IEnumerable<int> validRange = Enumerable.Range(1,3);
+
     public void Work()
     {
         Console.WriteLine("Hello, World from Day 2!");
@@ -15,16 +19,10 @@ public class Day2
 
     bool IsValidPart1(List<int> line)
     {
-        var ordered = line.Order().SequenceEqual(line) || line.Order().Reverse().SequenceEqual(line);
+        bool ordered = line.Order().SequenceEqual(line) || line.Order().Reverse().SequenceEqual(line);
         if (!ordered)
             return false;
-        for (var i = 0; i < line.Count - 1; i++)
-        {
-            var diff = Math.Abs(line[i] - line[i + 1]);
-            if (diff < 1 || diff > 3)
-                return false;
-        }
-        return true;
+        return line.NextValidator((curr,next) => validRange.Contains(Math.Abs(curr - next)));
     }
 
     bool IsValidPart2(List<int> line)
