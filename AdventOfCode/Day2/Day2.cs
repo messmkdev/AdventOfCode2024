@@ -19,7 +19,7 @@ public class Day2
     {
         if (!line.IsOrdered())
             return false;
-        return line.NextValidator((curr,next) => Enumerable.Range(1,3).Contains(Math.Abs(curr - next)));
+        return line.NextValidator((curr,next) => Math.Abs(curr - next) is >= 1 and <= 3);
     }
 
     bool IsValidPart2(List<int> line)

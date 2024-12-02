@@ -6,6 +6,8 @@ public static class ListExt{
             T current = numbers[i];
             T next = numbers[i + 1];
             result &= nextValidator(current, next);
+            if(!result)
+                return result;
         }
         return result;
     }
