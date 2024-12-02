@@ -2,8 +2,6 @@ using System.Collections.Generic;
 
 public class Day2
 {
-    IEnumerable<int> validRange = Enumerable.Range(1,3);
-
     public void Work()
     {
         Console.WriteLine("Hello, World from Day 2!");
@@ -19,23 +17,15 @@ public class Day2
 
     bool IsValidPart1(List<int> line)
     {
-        bool ordered = line.Order().SequenceEqual(line) || line.Order().Reverse().SequenceEqual(line);
-        if (!ordered)
+        if (!line.IsOrdered())
             return false;
-        return line.NextValidator((curr,next) => validRange.Contains(Math.Abs(curr - next)));
+        return line.NextValidator((curr,next) => Enumerable.Range(1,3).Contains(Math.Abs(curr - next)));
     }
 
     bool IsValidPart2(List<int> line)
     {
         if (IsValidPart1(line))
             return true;
-        for (var i = 0; i < line.Count; i++)
-        {
-            var newLine = new List<int>(line);
-            newLine.RemoveAt(i);
-            if (IsValidPart1(newLine))
-                return true;
-        }
-        return false;
+        return line.VariationsWithoutOneElement().Any(IsValidPart1);
     }
 }
