@@ -4,6 +4,6 @@ internal class Program
     {
         //new Day1().Work();
 
-        new Day2().Work();
+        new Day3().Work();
     }
 }

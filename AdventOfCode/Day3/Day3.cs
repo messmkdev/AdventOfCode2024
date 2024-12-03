@@ -37,7 +37,7 @@ public class Day3
         }
 
         var count = SumOfPair(validMatch.Select(ExtractValueFromMatch));
-
+        Console.WriteLine($"Sum of mul {count}");
         Console.ReadLine();
     }
 

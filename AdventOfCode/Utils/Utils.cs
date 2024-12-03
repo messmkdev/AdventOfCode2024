@@ -1,5 +1,22 @@
+
+using System.Reflection;
+
 public class Utils{
+
+
+    public static string GetPath(){
+        var location = Assembly.GetCallingAssembly().Location.Split(@"\");
+        var path = Path.Combine(location.TakeWhile(s => s != "bin").ToArray());;
+        return path;
+    }
+
     public static Data ReadInputFile(int day, string colSeparator = " "){
-        return new Data(File.ReadAllLines($"C:/Dev/advent of code/AdventOfCode/Day{day}/input.txt"), colSeparator);
-    }    
+        
+        return new Data(File.ReadAllLines($"{GetPath()}/Day{day}/input.txt"), colSeparator);
+    }
+
+    internal static string ReadInputFileAsString(int day)
+    {
+        return File.ReadAllText($"{GetPath()}/Day{day}/input.txt");
+    }
 }
