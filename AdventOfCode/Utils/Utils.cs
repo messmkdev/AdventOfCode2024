@@ -19,4 +19,9 @@ public class Utils{
     {
         return File.ReadAllText($"{GetPath()}/Day{day}/input.txt");
     }
+
+    internal static List<string> ReadInputFileAsListString(int day)
+    {
+        return File.ReadAllLines($"{GetPath()}/Day{day}/input.txt").ToList();
+    }
 }
