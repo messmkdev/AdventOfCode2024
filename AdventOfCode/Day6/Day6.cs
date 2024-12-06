@@ -25,40 +25,47 @@ public class Day6
         }
 
         int cpt = 0;
-
         Console.WriteLine("----------------");       
         Stopwatch s = Stopwatch.StartNew(); 
         Parallel.For(0, possiblesVariations.Count(), (i) =>
         {
             if (IsLoop(possiblesVariations[i]))
             {
+                if(i % 50 == 0){
+                    Console.WriteLine($"Already found {cpt}");            
+                }
                 Interlocked.Increment(ref cpt);
             }
         });
-        Console.WriteLine($"Found {cpt} variations with infinite loop");
+        s.Stop();
+        Console.WriteLine($"Found {cpt} variations with infinite loop in {s.Elapsed.Duration().ToString()}" );
 
         Console.WriteLine("----------------");
         Console.WriteLine($"total guard path length {path.visited.Count()}");
 
     }
 
-    public void WalkPath(PathStringMatrix paths)
+    public void WalkPath(PathStringMatrix paths, bool log = false)
     {
         while (paths.GuardLoS().Contains('#'))
         {
-            //paths.LogLos();
+            if(log)
+                paths.LogLos();
             paths.WalkLos();
-            //paths.LogMatrix();
+            if(log)
+                paths.LogMatrix();
         }
-        //paths.LogLos();
+        if(log)
+            paths.LogLos();
         paths.WalkLos();
-        //paths.LogMatrix();
+        if(log)
+            paths.LogMatrix();
     }
 
     public bool IsLoop(PathStringMatrix paths)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        int iterationMax = 20000;
+        int iterationMax = 400;
         int iteration = 0;
         while (paths.GuardLoS().Contains('#') && iteration <= iterationMax)
         {
@@ -69,10 +76,8 @@ public class Day6
 
         if (iteration == iterationMax + 1)
         {
-            //Console.WriteLine($"Found Loop in{stopwatch.ElapsedMilliseconds} ms");
             return true;
         }
-        //Console.WriteLine($"Found Not Loop in {stopwatch.ElapsedMilliseconds} ms");
         return false;
     }
 }

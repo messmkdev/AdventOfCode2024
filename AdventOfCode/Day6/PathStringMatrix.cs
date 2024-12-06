@@ -51,9 +51,9 @@ public class PathStringMatrix : StringMatrix
         switch (direction)
         {
             case Direction.UP: return new LoS(direction, this.Select(rows => rows[GuardCol]).TakeWhile(c => !IsGuard(c)).Reverse().ToList());
-            case Direction.DOWN: return new LoS(direction, this.Select(rows => rows[GuardCol]).SkipWhile(c => !IsGuard(c)).ToList()[1..]);
+            case Direction.DOWN: return new LoS(direction, this.Select(rows => rows[GuardCol]).SkipWhile(c => !IsGuard(c)).TakeWhile(c => !IsWall(c), true).ToList()[1..]);
             case Direction.LEFT: return new LoS(direction, this[GuardRow].TakeWhile(c => !IsGuard(c)).Reverse().ToList());
-            case Direction.RIGHT: return new LoS(direction, this[GuardRow].SkipWhile(c => !IsGuard(c)).ToList()[1..]);
+            case Direction.RIGHT: return new LoS(direction, this[GuardRow].SkipWhile(c => !IsGuard(c)).TakeWhile(c => !IsWall(c), true).ToList()[1..]);
         }
         return new LoS(Direction.UP, new List<char>());
     }
