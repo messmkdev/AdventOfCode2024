@@ -33,4 +33,10 @@ public static class ListExt{
         toSwap.RemoveAt(idx2);
         toSwap.Insert(idx1, toInsert);
     }
+
+    public static void PrintMatrix(this List<string> lines){
+        foreach(var line in lines){
+            Console.WriteLine(string.Join("",line.Select(c => c + " ")));
+        }
+    }
 }

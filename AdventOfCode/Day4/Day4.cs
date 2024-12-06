@@ -7,7 +7,7 @@ public class Day4{
     Regex searchMas = new Regex(@"MAS");
 
     public void Work(){
-        var lines = File.ReadAllLines($"{Utils.GetPath()}/Day4/input.txt").ToList();
+        var lines = Utils.ReadInputFileAsListString(4).ToList();
         PrintMatrix(lines);
         var sumHorizontal = lines.Select(l => OccurenceOfXmas(l)).Sum();
         var sumVertical = Rotate(lines).Select(l => OccurenceOfXmas(l)).Sum();
