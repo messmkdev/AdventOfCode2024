@@ -48,7 +48,8 @@ public class PathStringMatrix : StringMatrix{
         return new LoS(Direction.UP, new List<char>());
     }
 
-public HashSet<string> visited = new HashSet<string>();
+    public HashSet<string> visited = new HashSet<string>();
+
     public void WalkLos(){
         var los = GuardLoS();
         bool hasWall = los.Contains('#');
@@ -56,15 +57,16 @@ public HashSet<string> visited = new HashSet<string>();
             var verticalDistanceToWall = Math.Abs(GuardRow - los.TakeWhile(c => !IsWall(c)).Count());
             for(var i = GuardRow ; i > verticalDistanceToWall; i--){
                 this[i][GuardCol] = 'X';
+                visited.Add((i).ToString()+"|"+GuardCol.ToString());
             }
             this[verticalDistanceToWall][GuardCol] = NextDirection(los);
-            visited.Add(verticalDistanceToWall.ToString()+GuardCol.ToString());
+            
         }
         if(los.Direction == Direction.DOWN){
             var verticalDistanceToWall = Math.Abs(GuardRow + los.TakeWhile(c => !IsWall(c)).Count());
             for(var i = GuardRow ; i < verticalDistanceToWall; i++){
                 this[i][GuardCol] = 'X';
-                visited.Add((GuardRow + i).ToString()+GuardCol.ToString());
+                visited.Add((i).ToString()+"|"+GuardCol.ToString());
             }
             this[verticalDistanceToWall][GuardCol] = NextDirection(los);
         }
@@ -72,7 +74,7 @@ public HashSet<string> visited = new HashSet<string>();
             var horizontalDistanceToWall = Math.Abs(GuardCol - los.TakeWhile(c => !IsWall(c)).Count());
             for(var i = GuardCol ; i > horizontalDistanceToWall ; i--){
                 this[GuardRow][i] = 'X';
-                visited.Add(GuardRow.ToString()+(i + GuardCol).ToString());
+                visited.Add(GuardRow.ToString()+"|"+i.ToString());
             }
             this[GuardRow][horizontalDistanceToWall] = NextDirection(los);
         }
@@ -80,7 +82,7 @@ public HashSet<string> visited = new HashSet<string>();
             var horizontalDistanceToWall = Math.Abs(GuardCol + los.TakeWhile(c => !IsWall(c)).Count());
             for(var i = GuardCol ; i < horizontalDistanceToWall ; i++){
                 this[GuardRow][i] = 'X';
-                visited.Add(GuardRow.ToString()+(i + GuardCol).ToString());
+                visited.Add(GuardRow.ToString()+"|"+i.ToString());
             }
             this[GuardRow][horizontalDistanceToWall] = NextDirection(los);
         }
@@ -88,7 +90,7 @@ public HashSet<string> visited = new HashSet<string>();
         GuardPos = GetPos(IsGuard);
         if(!hasWall){
             this[GuardRow][GuardCol] = 'X';
-            visited.Add(GuardRow.ToString()+GuardCol.ToString());
+            visited.Add("final");
         }
     }
 
