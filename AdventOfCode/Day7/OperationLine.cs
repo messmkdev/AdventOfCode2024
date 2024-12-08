@@ -32,7 +32,7 @@ public class OperationLine
 
     public bool IsValid(){
         var transformations = GetTransformations();
-        return transformations.Any(t => IsValid(t));
+        return transformations.Any(t => IsValid(t, true));
     }
 
     bool IsValid(List<Func<long, long, long>> transformation, bool log =false){
