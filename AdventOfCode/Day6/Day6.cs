@@ -1,53 +1,83 @@
-public class Day6{
+using System.Diagnostics;
 
-    public void Work(){
-            var lines = Utils.ReadInputFileAsListString(6);
-            //lines.PrintMatrix();
+public class Day6
+{
 
-            
-            PathStringMatrix path = new PathStringMatrix(lines);
-            WalkPath(path);
+    public void Work()
+    {
+        var lines = Utils.ReadInputFileAsListString(6);
+        //lines.PrintMatrix();
 
-            var positionVisited = path.PositionVisited();
-            positionVisited.RemoveAt(0);
 
-            List<PathStringMatrix> possiblesVariations = new List<PathStringMatrix>();
+        PathStringMatrix path = new PathStringMatrix(lines);
+        WalkPath(path);
 
-            foreach(var posVisited in positionVisited){
-                var copy = new PathStringMatrix(lines);
-                copy[posVisited.Item1][posVisited.Item2] = '#';
-                possiblesVariations.Add(copy);
-            }
-            var nbVariations = possiblesVariations.Count();
-            var count = possiblesVariations.Count(p => IsLoop(p));
+        var positionVisited = path.PositionVisited();
+        positionVisited.RemoveAt(0);
 
-            Console.WriteLine("----------------");
-            Console.WriteLine($"total guard path length {path.visited.Count()}");
+        List<PathStringMatrix> possiblesVariations = new List<PathStringMatrix>();
 
-    }
-
-    public void WalkPath(PathStringMatrix paths){
-        while(paths.GuardLoS().Contains('#')){
-            //paths.LogLos();
-            paths.WalkLos();
-            //paths.LogMatrix();
+        foreach (var posVisited in positionVisited)
+        {
+            var copy = new PathStringMatrix(lines);
+            copy[posVisited.Item1][posVisited.Item2] = '#';
+            possiblesVariations.Add(copy);
         }
-        //paths.LogLos();
-        paths.WalkLos();
-        //paths.LogMatrix();
+
+        int cpt = 0;
+        Console.WriteLine("----------------");       
+        Stopwatch s = Stopwatch.StartNew(); 
+        Parallel.For(0, possiblesVariations.Count(), (i) =>
+        {
+            if (IsLoop(possiblesVariations[i]))
+            {
+                if(i % 50 == 0){
+                    Console.WriteLine($"Already found {cpt}");            
+                }
+                Interlocked.Increment(ref cpt);
+            }
+        });
+        s.Stop();
+        Console.WriteLine($"Found {cpt} variations with infinite loop in {s.Elapsed.Duration().ToString()}" );
+
+        Console.WriteLine("----------------");
+        Console.WriteLine($"total guard path length {path.visited.Count()}");
+
     }
 
-    public bool IsLoop(PathStringMatrix paths){
-        int iterationMax = 10000;
-        int iteration = 0;
-        while(paths.GuardLoS().Contains('#') && iteration <= iterationMax){
-            //paths.LogLos();
+    public void WalkPath(PathStringMatrix paths, bool log = false)
+    {
+        while (paths.GuardLoS().Contains('#'))
+        {
+            if(log)
+                paths.LogLos();
             paths.WalkLos();
-            //paths.LogMatrix();
+            if(log)
+                paths.LogMatrix();
+        }
+        if(log)
+            paths.LogLos();
+        paths.WalkLos();
+        if(log)
+            paths.LogMatrix();
+    }
+
+    public bool IsLoop(PathStringMatrix paths)
+    {
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        int iterationMax = 400;
+        int iteration = 0;
+        while (paths.GuardLoS().Contains('#') && iteration <= iterationMax)
+        {
+            paths.WalkLos();
             iteration++;
         }
-        if(iteration == iterationMax + 1)
+        stopwatch.Stop();
+
+        if (iteration == iterationMax + 1)
+        {
             return true;
+        }
         return false;
     }
 }
