@@ -2,7 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 
 public class OperationLine
 {
-    private static readonly string[] baseSigns = ["+", "*"];
+    private static readonly string[] baseSigns = ["+", "*", "|"];
     static IDictionary<long, List<List<Func<long, long, long>>>> TransformationsMap = new Dictionary<long, List<List<Func<long, long, long>>>>();
 
     public long Resultat { get; set; }
@@ -31,7 +31,7 @@ public class OperationLine
     }
 
     public bool IsValid(){
-        var transformations = GetTransformations();;
+        var transformations = GetTransformations();
         return transformations.Any(t => IsValid(t));
     }
 
@@ -66,7 +66,7 @@ public class OperationLine
                 transformation.Add(Mul);
             }
             else if(opeationSequence[i] == '|'){
-                
+                transformation.Add(Concat);
             }
         }
         return transformation;
